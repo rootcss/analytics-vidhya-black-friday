@@ -83,7 +83,7 @@ class XGBoost:
 		return np.sqrt(np.mean((yhat/y-1) ** 2))
 
 
-class Rossmann(XGBoost):
+class Problem(XGBoost):
   train = None
   test = None
   store = None
@@ -194,28 +194,28 @@ if __name__ == '__main__':
 		'test' : "data/test.csv",
 		'submission_file' : "output/submission.csv"
 	}
-	ross = Rossmann(core_files)
-	ross.loadDataSets()
-	ross.dataFilterAndCleaning()
+	problem = Problem(core_files)
+	problem.loadDataSets()
+	problem.dataFilterAndCleaning()
 
 	# Preparing to train data
-	ross.develop_features()
+	problem.develop_features()
 	unique_features = []
-	for feature in ross.features:
+	for feature in problem.features:
 	    if feature not in unique_features:
 	        unique_features.append(feature)
-	ross.features = unique_features
-	ross.xgb_num_boost_round = 5000
-	model_data = ross.trainXGBModel(ross.train, ross.features)
+	problem.features = unique_features
+	problem.xgb_num_boost_round = 5000
+	model_data = problem.trainXGBModel(problem.train, problem.features)
 
 	# Validating and Printing
-	ross.validateXGBModel(model_data)
-	test_probs = ross.predictUsingXGB(ross.test, ross.features)
+	problem.validateXGBModel(model_data)
+	test_probs = problem.predictUsingXGB(problem.test, problem.features)
 
 	# # Submitting
-	ross.submission(test_probs)
+	problem.submission(test_probs)
 
 	# # Calculating & plotting Feature Importance
-	ross.fmap_path = 'output/xgb.fmap'
-	imp = ross.calculateXGBFeatureImportances(ross.features)
-	ross.plotting(imp, output='output/plot_feature_importance_using_xgb.png')
+	problem.fmap_path = 'output/xgb.fmap'
+	imp = problem.calculateXGBFeatureImportances(problem.features)
+	problem.plotting(imp, output='output/plot_feature_importance_using_xgb.png')
