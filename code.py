@@ -205,7 +205,7 @@ if __name__ == '__main__':
 	    if feature not in unique_features:
 	        unique_features.append(feature)
 	problem.features = unique_features
-	problem.xgb_num_boost_round = 5000
+	problem.xgb_num_boost_round = 9000
 	model_data = problem.trainXGBModel(problem.train, problem.features)
 
 	# Validating and Printing
